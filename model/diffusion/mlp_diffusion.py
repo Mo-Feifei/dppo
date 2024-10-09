@@ -235,6 +235,7 @@ class DiffusionMLP(nn.Module):
 
         # flatten history
         state = cond["state"].view(B, -1)
+        # state = cond.view(B, -1)
 
         # obs encoder
         if hasattr(self, "cond_mlp"):
