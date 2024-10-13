@@ -10,10 +10,12 @@ checkpoints/
 out/
 err/
 *.pkl
+
 outputs/
 *.pt
 *.onnx
 *.sarif
+*.sh
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
