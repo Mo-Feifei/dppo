@@ -105,6 +105,51 @@ def make_async(
             sparse_reward=sparse_reward,
         )
         return env
+    
+    if env_type == "aliengo":
+        from go1_gym.envs.base.legged_robot_config import Cfg
+        from go1_gym.envs.go1.aliengo_config import config_aliengo
+        from go1_gym.envs.go1.velocity_tracking import VelocityTrackingEasyEnv
+        from env.gym_utils.wrapper.aliengo import AliengoRLSimEnvMultiStepWrapper
+
+        config_aliengo(Cfg)
+        Cfg.control.control_type = "P"
+
+        Cfg.domain_rand.push_robots = False
+        Cfg.domain_rand.randomize_friction = False
+        Cfg.domain_rand.randomize_gravity = False
+        Cfg.domain_rand.randomize_restitution = False
+        Cfg.domain_rand.randomize_motor_offset = False
+        Cfg.domain_rand.randomize_motor_strength = False
+        Cfg.domain_rand.randomize_friction_indep = False
+        Cfg.domain_rand.randomize_ground_friction = False
+        Cfg.domain_rand.randomize_base_mass = True
+        Cfg.domain_rand.randomize_Kd_factor = False
+        Cfg.domain_rand.randomize_Kp_factor = False
+        Cfg.domain_rand.randomize_joint_friction = False
+        Cfg.domain_rand.randomize_com_displacement = False
+
+        Cfg.env.num_envs = 1
+        Cfg.terrain.num_rows = 5
+        Cfg.terrain.num_cols = 5
+        Cfg.terrain.border_size = 0
+        Cfg.terrain.center_robots = True
+        Cfg.terrain.center_span = 1
+        Cfg.terrain.teleport_robots = True
+        Cfg.commands.command_curriculum = False
+        Cfg.env.num_privileged_obs = 6
+
+        Cfg.domain_rand.lag_timesteps = 6
+        Cfg.domain_rand.randomize_lag_timesteps = True
+
+        env = VelocityTrackingEasyEnv(sim_device='cuda:0', headless=headless, cfg=Cfg)
+        env = AliengoRLSimEnvMultiStepWrapper(
+            env, 
+            n_action_steps = act_steps,
+            num_obs=kwargs.get('num_obs', 39), 
+            obs_history_length=kwargs.get('history_len', 30))
+
+        return env
 
     # avoid import error due incompatible gym versions
     from gym import spaces

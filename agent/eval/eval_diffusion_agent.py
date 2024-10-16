@@ -7,6 +7,7 @@ import os
 import numpy as np
 import torch
 import logging
+import time as tm
 
 log = logging.getLogger(__name__)
 from util.timer import Timer
@@ -38,12 +39,23 @@ class EvalDiffusionAgent(EvalAgent):
         firsts_trajs[0] = 1
         reward_trajs = np.zeros((self.n_steps, self.n_envs))
 
+        print(self.env_name)
+        if self.env_name == "aliengo":
+            for steps in range(100):
+                actions = np.zeros((1, 2, 12),dtype=np.float32)
+                self.venv.env.p_gains = 80.0
+                self.venv.env.d_gains = 4.0
+                obs, rew, _, done, info = self.venv.step(actions)
+            self.venv.env.p_gains = 20.0
+            self.venv.env.d_gains = 0.5
+
         # Collect a set of trajectories from env
         for step in range(self.n_steps):
             if step % 10 == 0:
                 print(f"Processed step {step} of {self.n_steps}")
 
             # Select action
+            # t1 = tm.time()
             with torch.no_grad():
                 cond = {
                     "state": torch.from_numpy(prev_obs_venv["state"])
@@ -55,6 +67,8 @@ class EvalDiffusionAgent(EvalAgent):
                     samples.trajectories.cpu().numpy()
                 )  # n_env x horizon x act
             action_venv = output_venv[:, : self.act_steps]
+            # print(tm.time()-t1)
+            # print(action_venv)
 
             # Apply multi-step action
             obs_venv, reward_venv, terminated_venv, truncated_venv, info_venv = (

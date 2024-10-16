@@ -81,6 +81,10 @@ def main(cfg: OmegaConf):
     if "env" in cfg and "env_type" in cfg.env and cfg.env.env_type == "furniture":
         import furniture_bench
 
+    if "env" in cfg and "env_type" in cfg.env and cfg.env.env_type == "aliengo":
+        import isaacgym
+        assert isaacgym
+
     # run agent
     cls = hydra.utils.get_class(cfg._target_)
     agent = cls(cfg)

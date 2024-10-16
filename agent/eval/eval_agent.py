@@ -44,7 +44,7 @@ class EvalAgent:
             action_dim=cfg.action_dim,
             **cfg.env.specific if "specific" in cfg.env else {},
         )
-        if not env_type == "furniture":
+        if not env_type == "furniture" and not env_type == "aliengo":
             self.venv.seed(
                 [self.seed + i for i in range(cfg.env.n_envs)]
             )  # otherwise parallel envs might have the same initial states!
