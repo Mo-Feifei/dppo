@@ -40,20 +40,20 @@ class EvalDiffusionAgent(EvalAgent):
         reward_trajs = np.zeros((self.n_steps, self.n_envs))
 
         print(self.env_name)
-        if self.env_name == "aliengo":
-            for steps in range(100):
-                actions = np.zeros((1, 2, 12),dtype=np.float32)
-                self.venv.env.p_gains = 80.0
-                self.venv.env.d_gains = 4.0
-                obs, rew, _, done, info = self.venv.step(actions)
-            self.venv.env.p_gains = 20.0
-            self.venv.env.d_gains = 0.5
+        # if self.env_name == "aliengo":
+        #     for steps in range(100):
+        #         actions = np.zeros((1, 2, 12),dtype=np.float32)
+        #         self.venv.env.p_gains = 80.0
+        #         self.venv.env.d_gains = 4.0
+        #         obs, rew, _, done, info = self.venv.step(actions)
+        #     self.venv.env.p_gains = 20.0
+        #     self.venv.env.d_gains = 0.5
 
         # Collect a set of trajectories from env
         for step in range(self.n_steps):
             if step % 10 == 0:
                 print(f"Processed step {step} of {self.n_steps}")
-
+            print(prev_obs_venv["state"].shape)
             # Select action
             # t1 = tm.time()
             with torch.no_grad():

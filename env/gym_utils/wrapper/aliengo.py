@@ -21,27 +21,35 @@ class AliengoRLSimEnvMultiStepWrapper(gym.Wrapper):
         total_rew = torch.zeros(action.shape[0],device=self.env.device)
         for i in range(self.n_action_steps):
             obs, rew, done, info = self.env.step(action[:,i,:])
-            obs = obs[0:self.num_obs]
+            obs = self.convert_obs(obs)
             total_rew += rew
-            self.obs_history = torch.cat((self.obs_history[:, self.env.num_obs:], obs), dim=-1)
+            env_ids = done.nonzero(as_tuple=False).flatten()
+            self.reset_one_arg(env_ids)
+            self.obs_history = torch.cat((self.obs_history[:, self.num_obs:], obs), dim=-1)
         return {'state': self.obs_history.cpu().numpy()}, total_rew.cpu().numpy(), torch.zeros_like(done).cpu().numpy(), done.cpu().numpy(), info
 
-    def get_observations(self):
-        obs = self.env.get_observations()
-        obs = obs[0:self.num_obs]
-        self.obs_history = torch.cat((self.obs_history[:, self.env.num_obs:], obs), dim=-1)
+    def convert_observations(self):
+        obs = self.env.convert_observations()
+        obs = self.convert_obs(obs)
+        self.obs_history = torch.cat((self.obs_history[:, self.num_obs:], obs), dim=-1)
         return {'state': self.obs_history.clone().cpu().numpy()}
 
-    def reset_one_arg(self, env_ind=None, options=None):  # it might be a problem that this isn't getting called!!
-        if env_ind is not None:
-            env_ind = torch.tensor([env_ind], device=self.device)
-        ret = super().reset_idx(env_ind)
-        ret = ret[0:self.num_obs]
+    def reset_one_arg(self, env_ind):  # it might be a problem that this isn't getting called!!
         self.obs_history[env_ind, :] = 0
-        return {'state': ret.clone().cpu().numpy()}
+
 
     def reset_arg(self, options_list=None):
         ret = super().reset()
-        ret = ret[:, 0:self.num_obs]
+        obs = self.convert_obs(ret)
+        print(obs.shape)
         self.obs_history[:, :] = 0
+        print(self.obs_history.shape)
+        self.obs_history = torch.cat((self.obs_history[:, self.num_obs:], obs), dim=-1)
+        print(self.obs_history.shape)
         return {'state': self.obs_history.clone().cpu().numpy()}
+    
+    def convert_obs(self, obs):
+        o = torch.zeros((self.env.num_envs, 39),device=self.env.device)
+        o[:,0:3] = obs[:,0:3]
+        o[:,3:39] = obs[:,18:54]
+        return o

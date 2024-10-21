@@ -282,6 +282,7 @@ class DiffusionModel(nn.Module):
             # clamp action at final step
             if self.final_action_clip_value is not None and i == len(t_all) - 1:
                 x = torch.clamp(x, -self.final_action_clip_value, self.final_action_clip_value)
+            # print(t,x)
         return Sample(x, None)
         # return x
 

@@ -7,7 +7,8 @@ _target_: agent.pretrain.train_diffusion_agent.TrainDiffusionAgent
 
 name: ${env}_pre_diffusion_unet_ta${horizon_steps}_td${denoising_steps}
 logdir: ${oc.env:DPPO_LOG_DIR}/aliengo-pretrain/${name}/${now:%Y-%m-%d}_${now:%H-%M-%S}_${seed}
-train_dataset_path: ${oc.env:DPPO_DATA_DIR}/aliengo/${task}/trotting_clean.npz
+train_dataset_path: ${oc.env:DPPO_DATA_DIR}/aliengo/${task}/trotting_clean_50_scaled.npz
+val_dataset_path: ${oc.env:DPPO_DATA_DIR}/aliengo/${task}/trotting_clean_50_scaled_val.npz
 
 seed: 42
 device: cuda:0
@@ -33,9 +34,12 @@ train:
     first_cycle_steps: 10000
     warmup_steps: 100
     min_lr: 1e-5
+  train_split: 0.1
   epoch_start_ema: 20
   update_ema_freq: 10
   save_model_freq: 1000
+  val_freq: 10
+  log_freq: 10
 
 model:
   _target_: model.diffusion.diffusion.DiffusionModel
@@ -49,6 +53,7 @@ model:
     kernel_size: 5
     n_groups: 8
     smaller_encoder: False
+    cond_mlp_dims: [512, 128]
     cond_predict_scale: True
     cond_dim: ${eval:'${obs_dim} * ${cond_steps}'}
     action_dim: ${action_dim}
@@ -64,6 +69,13 @@ ema:
 train_dataset:
   _target_: agent.dataset.sequence.StitchedSequenceDataset
   dataset_path: ${train_dataset_path}
+  horizon_steps: ${horizon_steps}
+  cond_steps: ${cond_steps}
+  device: ${device}
+
+val_dataset:
+  _target_: agent.dataset.sequence.StitchedSequenceDataset
+  dataset_path: ${val_dataset_path}
   horizon_steps: ${horizon_steps}
   cond_steps: ${cond_steps}
   device: ${device}
