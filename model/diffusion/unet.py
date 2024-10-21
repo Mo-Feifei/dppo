@@ -275,13 +275,13 @@ class Unet1D(nn.Module):
         cond: dict with key state/rgb; more recent obs at the end
             state: (B, To, obs_dim)
         """
-        B = len(x)
+        B = x.shape[0]
 
         # move chunk dim to the end
         x = einops.rearrange(x, "b h t -> b t h")
 
         # flatten history
-        state = cond["state"].view(B, -1)
+        state = cond.view(B, -1)
 
         # obs encoder
         if hasattr(self, "cond_mlp"):

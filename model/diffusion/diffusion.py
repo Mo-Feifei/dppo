@@ -244,10 +244,10 @@ class DiffusionModel(nn.Module):
                 trajectories: (B, Ta, Da)
         """
         device = self.betas.device
-        sample_data = cond["state"] if "state" in cond else cond["rgb"]
-        B = len(sample_data)
-        # sample_data = cond
-        # B = 1
+        # sample_data = cond["state"] if "state" in cond else cond["rgb"]
+        # B = len(sample_data)
+        sample_data = cond
+        B = 1
 
         # Loop
         x = torch.randn((B, self.horizon_steps, self.action_dim), device=device)
@@ -283,8 +283,8 @@ class DiffusionModel(nn.Module):
             if self.final_action_clip_value is not None and i == len(t_all) - 1:
                 x = torch.clamp(x, -self.final_action_clip_value, self.final_action_clip_value)
             # print(t,x)
-        return Sample(x, None)
-        # return x
+        # return Sample(x, None)
+        return x
 
     # ---------- Supervised training ----------#
 
