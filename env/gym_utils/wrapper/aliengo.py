@@ -22,14 +22,15 @@ class AliengoRLSimEnvMultiStepWrapper(gym.Wrapper):
         for i in range(self.n_action_steps):
             obs, rew, done, info = self.env.step(action[:,i,:])
             obs = self.convert_obs(obs)
+            # print(obs)
             total_rew += rew
             env_ids = done.nonzero(as_tuple=False).flatten()
             self.reset_one_arg(env_ids)
             self.obs_history = torch.cat((self.obs_history[:, self.num_obs:], obs), dim=-1)
         return {'state': self.obs_history.cpu().numpy()}, total_rew.cpu().numpy(), torch.zeros_like(done).cpu().numpy(), done.cpu().numpy(), info
 
-    def convert_observations(self):
-        obs = self.env.convert_observations()
+    def get_observations(self):
+        obs = self.env.get_observations()
         obs = self.convert_obs(obs)
         self.obs_history = torch.cat((self.obs_history[:, self.num_obs:], obs), dim=-1)
         return {'state': self.obs_history.clone().cpu().numpy()}
@@ -41,9 +42,8 @@ class AliengoRLSimEnvMultiStepWrapper(gym.Wrapper):
     def reset_arg(self, options_list=None):
         ret = super().reset()
         obs = self.convert_obs(ret)
-        print(obs.shape)
+        # print(obs)
         self.obs_history[:, :] = 0
-        print(self.obs_history.shape)
         self.obs_history = torch.cat((self.obs_history[:, self.num_obs:], obs), dim=-1)
         print(self.obs_history.shape)
         return {'state': self.obs_history.clone().cpu().numpy()}
@@ -52,4 +52,5 @@ class AliengoRLSimEnvMultiStepWrapper(gym.Wrapper):
         o = torch.zeros((self.env.num_envs, 39),device=self.env.device)
         o[:,0:3] = obs[:,0:3]
         o[:,3:39] = obs[:,18:54]
+        o[:,-12:] *= 10
         return o

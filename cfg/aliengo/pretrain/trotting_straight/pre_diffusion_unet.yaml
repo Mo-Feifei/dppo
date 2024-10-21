@@ -38,7 +38,7 @@ train:
   epoch_start_ema: 20
   update_ema_freq: 10
   save_model_freq: 1000
-  val_freq: 10
+  val_freq: 100
   log_freq: 10
 
 model:
