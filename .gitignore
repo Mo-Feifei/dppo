@@ -13,7 +13,7 @@ err/
 
 outputs/
 *.pt
-*.onnx
+# *.onnx
 *.sarif
 *.sh
 
