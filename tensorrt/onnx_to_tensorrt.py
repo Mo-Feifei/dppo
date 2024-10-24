@@ -72,7 +72,8 @@ def main():
     
     np.copyto(inputs[0].host, np.zeros((1,1170)))
 
-    for i in range(10):
+    t = []
+    for i in range(100):
         t1 = time.time()
         trt_outputs = common.do_inference(
             context,
@@ -82,8 +83,9 @@ def main():
             outputs=outputs,
             stream=stream,
         )
-        print(time.time()-t1)
+        t.append(time.time()-t1)
     # We use the highest probability as our prediction. Its index corresponds to the predicted label.
+    print(sum(t)/len(t))
     print(trt_outputs[0][:24])
     common.free_buffers(inputs, outputs, stream)
 
