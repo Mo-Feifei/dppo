@@ -7,7 +7,7 @@ _target_: agent.pretrain.train_diffusion_agent.TrainDiffusionAgent
 
 name: ${env}_pre_diffusion_unet_ta${horizon_steps}_td${denoising_steps}
 logdir: ${oc.env:DPPO_LOG_DIR}/aliengo-pretrain/${name}/${now:%Y-%m-%d}_${now:%H-%M-%S}_${seed}
-train_dataset_path: ${oc.env:DPPO_DATA_DIR}/aliengo/${task}/trotting_clean_50_scaled.npz
+train_dataset_path: ${oc.env:DPPO_DATA_DIR}/aliengo/${task}/trotting_clean_50_scaled_delay_2.npz
 val_dataset_path: ${oc.env:DPPO_DATA_DIR}/aliengo/${task}/trotting_clean_50_scaled_val.npz
 
 seed: 42
