@@ -250,7 +250,7 @@ class DiffusionModel(nn.Module):
         B = 1
 
         # Loop
-        x = torch.randn((B, self.horizon_steps, self.action_dim), device=device)
+        x = torch.zeros((B, self.horizon_steps, self.action_dim), device=device)
         if self.use_ddim:
             t_all = self.ddim_t
         else:
