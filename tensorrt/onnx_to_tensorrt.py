@@ -92,6 +92,7 @@ def main():
             outputs=outputs,
             stream=stream,
         )
+        print(time.time()-t1)
         t.append(time.time()-t1)
     # We use the highest probability as our prediction. Its index corresponds to the predicted label.
     print(sum(t)/len(t))
