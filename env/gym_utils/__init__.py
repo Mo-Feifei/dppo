@@ -121,9 +121,6 @@ def make_async(
         Cfg.curriculum_thresholds.tracking_contacts_shaped_force = 0.90
 
         Cfg.commands.distributional_commands = True
-
-        Cfg.domain_rand.lag_timesteps = 6
-        Cfg.domain_rand.randomize_lag_timesteps = True
         Cfg.control.control_type = "P"
 
         Cfg.domain_rand.randomize_rigids_after_start = False
@@ -330,7 +327,7 @@ def make_async(
         Cfg.commands.command_curriculum = False
         Cfg.env.num_privileged_obs = 6
 
-        Cfg.domain_rand.lag_timesteps = 6
+        Cfg.domain_rand.lag_timesteps = 1
         Cfg.domain_rand.randomize_lag_timesteps = True
 
         env = VelocityTrackingEasyEnv(sim_device='cuda:0', headless=headless, cfg=Cfg)
