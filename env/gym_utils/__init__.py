@@ -303,19 +303,19 @@ def make_async(
         Cfg.control.action_scale = kwargs.get("action_scale", 2.5)
 
         Cfg.domain_rand.randomize_rigids_after_start = False
-        Cfg.domain_rand.push_robots = False
+        Cfg.domain_rand.push_robots = True
         Cfg.domain_rand.randomize_friction = False
         Cfg.domain_rand.randomize_gravity = False
         Cfg.domain_rand.randomize_restitution = False
-        Cfg.domain_rand.randomize_motor_offset = False
-        Cfg.domain_rand.randomize_motor_strength = False
+        Cfg.domain_rand.randomize_motor_offset = True
+        Cfg.domain_rand.randomize_motor_strength = True
         Cfg.domain_rand.randomize_friction_indep = False
-        Cfg.domain_rand.randomize_ground_friction = False
+        Cfg.domain_rand.randomize_ground_friction = True
         Cfg.domain_rand.randomize_base_mass = True
         Cfg.domain_rand.randomize_Kd_factor = False
         Cfg.domain_rand.randomize_Kp_factor = False
         Cfg.domain_rand.randomize_joint_friction = False
-        Cfg.domain_rand.randomize_com_displacement = False
+        Cfg.domain_rand.randomize_com_displacement = True
 
         Cfg.env.num_envs = 1
         Cfg.terrain.num_rows = 5
