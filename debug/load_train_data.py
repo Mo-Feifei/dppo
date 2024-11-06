@@ -25,16 +25,20 @@ def main(cfg: OmegaConf):
     # print("Load Model successfully!")
     # model.eval()
 
-    data = np.load("/home/qxy/dppo/data/aliengo/trotting_straight/trotting_delay_2_obs.npz")
+    data = np.load("/home/qxy/dppo/data/aliengo/trotting_straight/trotting_delay_2_history_30.npz")
     states = data["states"]
     action = data["actions"]
 
-    print(states[0])
+    print(states[0,-39:])
     print(action[0])
-    print(states[1])
+    print(states[1,-39:])
     print(action[1])
-    print(states[2])
+    print(states[2,-39:])
     print(action[2])
+    print(states[3,-39:])
+    print(action[3])
+    print(states[4,-39:])
+    print(action[4])
 
     # torch_input = torch.from_numpy(states[3,:]).to("cuda:0").unsqueeze(0).to(torch.float32)
     # cond = {}

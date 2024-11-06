@@ -14,15 +14,17 @@ class AliengoRLSimEnvMultiStepWrapper(gym.Wrapper):
         self.num_obs_history = self.obs_history_length * self.num_obs
         self.obs_history = torch.zeros(self.env.num_envs, self.num_obs_history, dtype=torch.float,
                                        device=self.env.device, requires_grad=False)
-        self.delay_action = [torch.zeros(1,12)] * 3
+        # self.delay_action = [torch.zeros(1,12)] * 3
 
     def step(self, action):
         # privileged information and observation history are stored in info
         action = torch.from_numpy(action).to(self.env.device)
         total_rew = torch.zeros(action.shape[0],device=self.env.device)
         for i in range(self.n_action_steps):
-            self.delay_action = self.delay_action[1:] + [action[:,i,:]]
-            act = self.delay_action[0]
+            # self.delay_action = self.delay_action[1:] + [action[:,i,:]]
+            # act = self.delay_action[0]
+            act = action[:,i,:]
+            # print(act)
             obs, rew, done, info = self.env.step(act)
             obs = self.convert_obs(obs)
             # print(obs)
