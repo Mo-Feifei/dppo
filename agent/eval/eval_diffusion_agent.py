@@ -39,15 +39,15 @@ class EvalDiffusionAgent(EvalAgent):
         firsts_trajs[0] = 1
         reward_trajs = np.zeros((self.n_steps, self.n_envs))
 
-        print(self.env_name)
-        if self.env_name == "aliengo":
-            for steps in range(100):
-                actions = np.zeros((1, 2, 12),dtype=np.float32)
-                self.venv.env.p_gains = 80.0
-                self.venv.env.d_gains = 4.0
-                obs, rew, _, done, info = self.venv.step(actions)
-            self.venv.env.p_gains = 40.0
-            self.venv.env.d_gains = 2.0
+        # print(self.env_name)
+        # if self.env_name == "aliengo":
+        #     for steps in range(100):
+        #         actions = np.zeros((1, 2, 12),dtype=np.float32)
+        #         self.venv.env.p_gains = 80.0
+        #         self.venv.env.d_gains = 4.0
+        #         obs, rew, _, done, info = self.venv.step(actions)
+        #     self.venv.env.p_gains = 40.0
+        #     self.venv.env.d_gains = 2.0
         # data = np.load("/home/qxy/dppo/data/aliengo/trotting_straight/trotting_clean_50_scaled.npz")
         # states = data["states"]
         # action = data["actions"]
@@ -57,7 +57,7 @@ class EvalDiffusionAgent(EvalAgent):
         for step in range(self.n_steps):
             if step % 10 == 0:
                 print(f"Processed step {step} of {self.n_steps}")
-            # print(prev_obs_venv["state"][0,-39:])
+            # print(prev_obs_venv["state"][0,-49:])
             # Select action
             # t1 = tm.time()
             with torch.no_grad():
