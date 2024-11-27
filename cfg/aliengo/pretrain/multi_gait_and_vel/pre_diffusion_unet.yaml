@@ -17,7 +17,7 @@ env: ${task}_dim
 obs_dim: 1470
 action_dim: 12
 denoising_steps: 100
-horizon_steps: 8
+horizon_steps: 4
 cond_steps: 1
 
 wandb:
@@ -26,7 +26,7 @@ wandb:
   run: ${now:%H-%M-%S}_${name}
 
 train:
-  n_epochs: 8000
+  n_epochs: 12000
   batch_size: 512
   learning_rate: 3e-4
   weight_decay: 1e-6
