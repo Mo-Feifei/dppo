@@ -7,17 +7,17 @@ _target_: agent.pretrain.train_diffusion_agent.TrainDiffusionAgent
 
 name: ${env}_pre_diffusion_unet_ta${horizon_steps}_td${denoising_steps}
 logdir: ${oc.env:DPPO_LOG_DIR}/aliengo-pretrain/${name}/${now:%Y-%m-%d}_${now:%H-%M-%S}_${seed}
-train_dataset_path: ${oc.env:DPPO_DATA_DIR}/aliengo/${task}/trotting_50_8_0.npz
+train_dataset_path: ${oc.env:DPPO_DATA_DIR}/aliengo/${task}/multi_vel_onehot.npz
 val_dataset_path: ${oc.env:DPPO_DATA_DIR}/aliengo/${task}/trotting_clean_50_scaled_val.npz
 
 seed: 42
 device: cuda:0
-task: trotting_straight
+task: multi_gait_and_vel
 env: ${task}_dim
-obs_dim: 312
+obs_dim: 1470
 action_dim: 12
 denoising_steps: 100
-horizon_steps: 8
+horizon_steps: 4
 cond_steps: 1
 
 wandb:
@@ -26,9 +26,9 @@ wandb:
   run: ${now:%H-%M-%S}_${name}
 
 train:
-  n_epochs: 8000
-  batch_size: 256
-  learning_rate: 1e-4
+  n_epochs: 12000
+  batch_size: 512
+  learning_rate: 3e-4
   weight_decay: 1e-6
   lr_scheduler:
     first_cycle_steps: 10000
@@ -37,7 +37,7 @@ train:
   train_split: 0.1
   epoch_start_ema: 20
   update_ema_freq: 10
-  save_model_freq: 1000
+  save_model_freq: 500
   val_freq: 100
   log_freq: 10
 

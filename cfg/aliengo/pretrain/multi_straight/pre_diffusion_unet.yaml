@@ -7,14 +7,14 @@ _target_: agent.pretrain.train_diffusion_agent.TrainDiffusionAgent
 
 name: ${env}_pre_diffusion_unet_ta${horizon_steps}_td${denoising_steps}
 logdir: ${oc.env:DPPO_LOG_DIR}/aliengo-pretrain/${name}/${now:%Y-%m-%d}_${now:%H-%M-%S}_${seed}
-train_dataset_path: ${oc.env:DPPO_DATA_DIR}/aliengo/${task}/trotting_50_8_0.npz
+train_dataset_path: ${oc.env:DPPO_DATA_DIR}/aliengo/${task}/multi_onehot_50_30_0.npz
 val_dataset_path: ${oc.env:DPPO_DATA_DIR}/aliengo/${task}/trotting_clean_50_scaled_val.npz
 
 seed: 42
 device: cuda:0
-task: trotting_straight
+task: multi_straight
 env: ${task}_dim
-obs_dim: 312
+obs_dim: 1260
 action_dim: 12
 denoising_steps: 100
 horizon_steps: 8
@@ -37,7 +37,7 @@ train:
   train_split: 0.1
   epoch_start_ema: 20
   update_ema_freq: 10
-  save_model_freq: 1000
+  save_model_freq: 500
   val_freq: 100
   log_freq: 10
 

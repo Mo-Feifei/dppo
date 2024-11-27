@@ -7,17 +7,17 @@ _target_: agent.eval.eval_diffusion_agent.EvalDiffusionAgent
 
 name: ${env_name}_eval_diffusion_unt_ta${horizon_steps}_td${denoising_steps}
 logdir: ${oc.env:DPPO_LOG_DIR}/aliengo-eval/${name}/${now:%Y-%m-%d}_${now:%H-%M-%S}_${seed}
-base_policy_path: ${oc.env:DPPO_LOG_DIR}/aliengo-pretrain/trotting_straight_dim_pre_diffusion_unet_ta8_td100/2024-11-05_22-16-19_42/checkpoint/state_8000.pt
+base_policy_path: ${oc.env:DPPO_LOG_DIR}/aliengo-pretrain/multi_gait_and_vel_dim_pre_diffusion_unet_ta4_td100/2024-11-26_16-39-57_42/checkpoint/state_12000.pt
 # normalization_path: ${oc.env:DPPO_DATA_DIR}/aliengo/${env.specific.aliengo}_${env.specific.randomness}/normalization.pth
 
 seed: 42
 device: cuda:0
 env_name: aliengo
-obs_dim: 312
+obs_dim: 1470
 action_dim: 12
 denoising_steps: 100
 cond_steps: 1
-horizon_steps: 8
+horizon_steps: 4
 act_steps: 1
 use_ddim: True
 ddim_steps: 5
@@ -33,8 +33,8 @@ env:
   best_reward_threshold_for_success: 1
   specific:
     headless: false
-    num_obs: 39
-    history_len: 8
+    num_obs: 49
+    history_len: 30
     action_scale: 2.5     # we scaled action by 0.1 when collecting data
     # aliengo: one_leg
     # randomness: med
