@@ -17,7 +17,7 @@ obs_dim: 1470
 action_dim: 12
 denoising_steps: 100
 cond_steps: 1
-horizon_steps: 4
+horizon_steps: 8
 act_steps: 1
 use_ddim: True
 ddim_steps: 5
