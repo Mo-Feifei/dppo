@@ -7,7 +7,7 @@ _target_: agent.pretrain.train_diffusion_agent.TrainDiffusionAgent
 
 name: ${env}_pre_diffusion_unet_ta${horizon_steps}_td${denoising_steps}
 logdir: ${oc.env:DPPO_LOG_DIR}/aliengo-pretrain/${name}/${now:%Y-%m-%d}_${now:%H-%M-%S}_${seed}
-train_dataset_path: ${oc.env:DPPO_DATA_DIR}/aliengo/${task}/multi_vel_onehot.npz
+train_dataset_path: ${oc.env:DPPO_DATA_DIR}/aliengo/${task}/multi_vel_onehot_300.npz
 val_dataset_path: ${oc.env:DPPO_DATA_DIR}/aliengo/${task}/trotting_clean_50_scaled_val.npz
 
 seed: 42
@@ -17,7 +17,7 @@ env: ${task}_dim
 obs_dim: 1470
 action_dim: 12
 denoising_steps: 100
-horizon_steps: 4
+horizon_steps: 8
 cond_steps: 1
 
 wandb:
@@ -27,8 +27,8 @@ wandb:
 
 train:
   n_epochs: 12000
-  batch_size: 512
-  learning_rate: 3e-4
+  batch_size: 1024
+  learning_rate: 1e-3
   weight_decay: 1e-6
   lr_scheduler:
     first_cycle_steps: 10000
