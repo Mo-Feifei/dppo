@@ -114,6 +114,14 @@ def make_async(
 
         config_aliengo(Cfg)
         Cfg.control.action_scale = kwargs.get("action_scale", 2.5)
+        Cfg.env.num_envs = num_envs
+        if not headless:
+            Cfg.terrain.num_rows = 5
+            Cfg.terrain.num_cols = 5
+            Cfg.terrain.border_size = 0
+            Cfg.terrain.center_robots = True
+            Cfg.terrain.center_span = 1
+            Cfg.terrain.teleport_robots = True
 
         env = VelocityTrackingEasyEnv(sim_device='cuda:0', headless=headless, cfg=Cfg)
         env = AliengoRLSimEnvMultiStepWrapper(
