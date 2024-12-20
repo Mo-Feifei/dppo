@@ -80,7 +80,7 @@ class TrainPPODiffusionAgent(TrainPPOAgent):
             # Holder
             obs_trajs = {
                 "state": np.zeros(
-                    (self.n_steps, self.n_envs, self.n_cond_step, self.obs_dim)
+                    (self.n_steps, self.n_envs, self.obs_dim)
                 )
             }
             chains_trajs = np.zeros(
@@ -143,6 +143,8 @@ class TrainPPODiffusionAgent(TrainPPOAgent):
                 terminated_trajs[step] = terminated_venv
                 firsts_trajs[step + 1] = done_venv
 
+                # print("Step "+str(step), reward_venv, done_venv)
+
                 # update for next step
                 prev_obs_venv = obs_venv
 
@@ -167,6 +169,7 @@ class TrainPPODiffusionAgent(TrainPPOAgent):
                 episode_reward = np.array(
                     [np.sum(reward_traj) for reward_traj in reward_trajs_split]
                 )
+                # print("Episode Reward:",episode_reward)
                 if (
                     self.furniture_sparse_reward
                 ):  # only for furniture tasks, where reward only occurs in one env step
@@ -363,9 +366,9 @@ class TrainPPODiffusionAgent(TrainPPOAgent):
                             if self.learn_eta and batch % self.eta_update_interval == 0:
                                 self.eta_optimizer.step()
                         self.critic_optimizer.step()
-                        log.info(
-                            f"approx_kl: {approx_kl}, update_epoch: {update_epoch}, num_batch: {num_batch}"
-                        )
+                        # log.info(
+                        #     f"approx_kl: {approx_kl}, update_epoch: {update_epoch}, num_batch: {num_batch}"
+                        # )
 
                         # Stop gradient update if KL difference reaches target
                         if self.target_kl is not None and approx_kl > self.target_kl:

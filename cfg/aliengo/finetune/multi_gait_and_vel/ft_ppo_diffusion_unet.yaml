@@ -6,7 +6,7 @@ hydra:
 _target_: agent.finetune.train_ppo_diffusion_agent.TrainPPODiffusionAgent
 
 name: ${env_name}_ft_diffusion_unet_ta${horizon_steps}_td${denoising_steps}_tdf${ft_denoising_steps}
-logdir: ${oc.env:DPPO_LOG_DIR}/aliengo-eval/${name}/${now:%Y-%m-%d}_${now:%H-%M-%S}_${seed}
+logdir: ${oc.env:DPPO_LOG_DIR}/aliengo-finetune/${name}/${now:%Y-%m-%d}_${now:%H-%M-%S}_${seed}
 base_policy_path: ${oc.env:DPPO_LOG_DIR}/aliengo-pretrain/multi_gait_and_vel_dim_pre_diffusion_unet_ta8_td100/2024-12-09_10-22-31_42/checkpoint/state_9000.pt
 # normalization_path: ${oc.env:DPPO_DATA_DIR}/furniture/${env.specific.furniture}_${env.specific.randomness}/normalization.pth
 
@@ -26,8 +26,8 @@ env:
   n_envs: 200
   name: ${env_name}
   env_type: aliengo
-  max_episode_steps: 500
-  best_reward_threshold_for_success: 1
+  max_episode_steps: 502
+  best_reward_threshold_for_success: 10
   specific:
     headless: true
     num_obs: 49
@@ -57,7 +57,7 @@ train:
     first_cycle_steps: 10000
     warmup_steps: 10
     min_lr: 1e-3
-  save_model_freq: 50
+  save_model_freq: 20
   val_freq: 10
   render:
     freq: 1
